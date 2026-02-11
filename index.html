@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Producto Creativo - La Marta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --comic-bg: #2c3e50;
+            --panel-border: 4px solid #000;
+            --shadow-hard: 10px 10px 0px rgba(0,0,0,0.8);
+            --yellow: #f1c40f;
+            --red: #c0392b;
+            --blue: #2980b9;
+            --green: #27ae60;
+            --white: #fff;
+        }
+
+        body {
+            background-color: var(--comic-bg);
+            background-image: 
+                radial-gradient(#34495e 15%, transparent 16%),
+                radial-gradient(#34495e 15%, transparent 16%);
+            background-size: 30px 30px;
+            font-family: 'Comic Neue', cursive;
+            margin: 0;
+            padding: 0;
+            color: #000;
+            overflow-x: hidden;
+        }
+
+        /* --- PANTALLA DE INICIO (LAUNCHER) --- */
+        #launcher {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.8s ease-in-out;
+        }
+
+        .btn-start {
+            font-family: 'Bangers', cursive;
+            font-size: 3rem;
+            color: var(--green);
+            border: 5px solid var(--green);
+            padding: 20px 50px;
+            cursor: pointer;
+            text-transform: uppercase;
+            background: black;
+            box-shadow: 0 0 30px var(--green);
+            animation: pulse 1.5s infinite;
+        }
+        .btn-start:hover { background: var(--green); color: black; }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .comic-container {
+            max-width: 1100px;
+            margin: 50px auto;
+            background: #f5f5f5;
+            padding: 30px;
+            box-shadow: 0 0 100px rgba(0,0,0,0.7);
+            border: 2px solid #000;
+        }
+
+        /* --- PORTADA ACADÉMICA ESTILO CÓMIC --- */
+        .cover-page {
+            border: var(--panel-border);
+            padding: 40px;
+            background: var(--yellow);
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            box-shadow: var(--shadow-hard);
+            transform: rotate(-1deg);
+        }
+
+        .uni-logo {
+            width: 180px;
+            filter: drop-shadow(5px 5px 0px rgba(0,0,0,0.2));
+            margin-bottom: 10px;
+        }
+
+        .cover-title {
+            font-family: 'Bangers', cursive;
+            font-size: 5rem;
+            line-height: 0.9;
+            color: var(--red);
+            text-shadow: 4px 4px 0 #000;
+            margin: 10px 0;
+            text-transform: uppercase;
+        }
+
+        .cover-subtitle {
+            font-family: 'Bangers', cursive;
+            font-size: 2.5rem;
+            color: #000;
+            margin-bottom: 30px;
+        }
+
+        .credits-box {
+            background: white;
+            border: 3px solid black;
+            display: inline-block;
+            padding: 20px 40px;
+            text-align: left;
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
+            width: 80%;
+        }
+
+        .credit-item {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 5px;
+        }
+
+        .credit-label {
+            font-weight: 900;
+            color: var(--blue);
+            text-transform: uppercase;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .date-stamp {
+            position: absolute;
+            bottom: 20px; right: 20px;
+            background: #000;
+            color: white;
+            padding: 5px 15px;
+            font-family: 'Share Tech Mono', monospace;
+            transform: rotate(-5deg);
+            border: 2px solid white;
+        }
+
+        /* --- PANELES DEL CÓMIC --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 25px;
+        }
+
+        .panel {
+            border: var(--panel-border);
+            background: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+        }
+        .panel:hover { transform: scale(1.01); z-index: 5; }
+
+        .panel img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-bottom: 3px solid black;
+            filter: contrast(1.1) brightness(1.1);
+        }
+
+        .col-12 { grid-column: span 12; height: 500px; }
+        .col-6 { grid-column: span 6; height: 400px; }
+        .col-4 { grid-column: span 4; height: 350px; }
+        .col-8 { grid-column: span 8; height: 350px; }
+
+        .caption {
+            background: white;
+            border: 3px solid black;
+            padding: 10px 15px;
+            position: absolute;
+            font-weight: bold;
+            box-shadow: 4px 4px 0 var(--yellow);
+            max-width: 80%;
+            font-size: 1.1rem;
+            z-index: 10;
+        }
+        .cap-top-left { top: 15px; left: 15px; }
+        .cap-bot-right { bottom: 15px; right: 15px; box-shadow: 4px 4px 0 var(--blue); }
+        .cap-bot-left { bottom: 15px; left: 15px; }
+
+        .speech {
+            background: white;
+            border-radius: 50%;
+            padding: 20px;
+            text-align: center;
+            border: 3px solid black;
+            position: absolute;
+            font-weight: bold;
+            font-style: italic;
+            z-index: 15;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+        }
+        .speech::after {
+            content: ''; position: absolute; border-style: solid; border-width: 15px 15px 0; border-color: black transparent; display: block; width: 0; z-index: 1;
+        }
+        
+        .sfx {
+            position: absolute;
+            font-family: 'Bangers', cursive;
+            font-size: 4rem;
+            color: var(--red);
+            text-shadow: 3px 3px 0 black, -1px -1px 0 white;
+            z-index: 20;
+            pointer-events: none;
+            transform: rotate(-15deg);
+        }
+
+        .system-log {
+            grid-column: span 12;
+            background: #000;
+            color: #0f0;
+            font-family: 'Share Tech Mono', monospace;
+            padding: 20px;
+            border: 4px solid #333;
+            margin-top: 20px;
+        }
+
+        .audio-ctrl {
+            position: fixed;
+            bottom: 20px; right: 20px;
+            background: var(--yellow);
+            border: 3px solid black;
+            padding: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            z-index: 999;
+        }
+
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+        @media (max-width: 768px) {
+            .grid { display: block; }
+            .panel { margin-bottom: 20px; width: 100%; height: auto !important; aspect-ratio: 4/3; }
+            .cover-title { font-size: 3rem; }
+            .credits-box { width: 95%; padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="Lluvia Ultra Relajante en el Hermoso Bosque.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="launcher">
+        <h1 style="color:white; font-family:'Share Tech Mono'; margin-bottom: 20px;">SYSTEM_READY...</h1>
+        <div class="btn-start" onclick="startComic()">INICIAR EXPERIENCIA 🎧</div>
+    </div>
+
+    <div class="audio-ctrl" onclick="toggleAudio()">🔊 MUTE/PLAY</div>
+
+    <div class="comic-container">
+        
+        <div class="cover-page">
+            <img src="https://static.wixstatic.com/media/4bedb4_42f1472fae0c491da2c93bd2fb480d2d~mv2.png" alt="Logo U Castro Carazo" class="uni-logo">
+            
+            <div style="font-family: 'Share Tech Mono'; font-weight: bold; margin-bottom: 5px;">UNIVERSIDAD CASTRO CARAZO</div>
+            <div style="font-size: 0.9rem; margin-bottom: 15px;">LICENCIATURA EN CIENCIAS DE LA EDUCACIÓN CON ÉNFASIS EN DOCENCIA</div>
+
+            <h1 class="cover-title">VIAJE A LA MARTA</h1>
+            <h2 class="cover-subtitle">PRODUCTO CREATIVO</h2>
+
+            <div class="credits-box">
+                <div class="credit-item">
+                    <span class="credit-label">ESTUDIANTE:</span><br>
+                    DANIEL TIJERINO CERÓN
+                </div>
+                <div class="credit-item">
+                    <span class="credit-label">CURSO:</span><br>
+                    LD5013 INTRODUCCIÓN A LA PEDAGOGÍA
+                </div>
+                <div class="credit-item">
+                    <span class="credit-label">PROFESORA:</span><br>
+                    CARMEN AMELIA ULATE QUESADA
+                </div>
+                <div class="credit-item" style="border: none;">
+                    <span class="credit-label">SEDE:</span> CENTRAL
+                </div>
+            </div>
+
+            <div class="date-stamp">
+                I CUATRIMESTRE | 14 FEB 2026
+            </div>
+        </div>
+        <div class="grid">
+            
+            <div class="panel col-12">
+                <div class="sfx" style="top: 10px; right: 50px; color: var(--yellow);">VROOOOM...</div>
+                <div class="caption cap-top-left">PANEL 1: LA RUTA</div>
+                <div class="speech" style="top: 150px; right: 100px; width: 200px;">"65 Km de curvas... mi CPU mental se está reiniciando."</div>
+                <img src="bosque.jpg" alt="Bosque" onerror="this.src='https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800'">
+                <div class="caption cap-bot-left" style="background: black; color: white;">
+                    Salimos de San José a las 07:00. Dejamos atrás la red de fibra óptica para conectarnos a la red de raíces.
+                </div>
+            </div>
+
+            <div class="panel col-6">
+                <div class="caption cap-top-left">PANEL 2: LEGACY SYSTEMS</div>
+                <img src="ruina1.jpg" alt="Ruina 1" onerror="this.src='https://images.unsplash.com/photo-1564357773229-373e6704b2b6?w=600'">
+                <div class="caption cap-bot-right">
+                    1870-1930. Aquí hubo máquinas, ruido y vapor. Hoy solo queda el esqueleto de una industria olvidada.
+                </div>
+            </div>
+
+            <div class="panel col-6">
+                <div class="sfx" style="bottom: 50px; left: 20px; font-size: 3rem; color: var(--green);">CRUNCH!</div>
+                <img src="ruina2.jpg" alt="Ruina 2" onerror="this.src='https://images.unsplash.com/photo-1596327299388-751759620577?w=600'">
+                <div class="speech" style="top: 20px; left: 20px; width: 150px;">"La naturaleza está sobrescribiendo el disco duro."</div>
+            </div>
+
+            <div class="panel col-4">
+                <img src="ruina3.jpg" alt="Ruina 3" onerror="this.src='https://images.unsplash.com/photo-1440628613470-3d711202e705?w=400'">
+                <div class="caption cap-bot-right" style="font-size: 0.9rem;">
+                    TEXTURAS DEL TIEMPO
+                </div>
+            </div>
+
+            <div class="panel col-8">
+                <div class="caption cap-top-left" style="background: var(--blue); color: white;">RECURSO HÍDRICO</div>
+                <img src="ruina4.jpg" alt="Ruina 4" onerror="this.src='https://images.unsplash.com/photo-1518773553398-650c184e0bb3?w=600'">
+                <div class="caption cap-bot-left">
+                    El agua aquí no sale de un tubo. Fluye viva desde Talamanca. Es el sistema de enfriamiento del planeta.
+                </div>
+            </div>
+
+            <div class="panel col-12">
+                <div class="sfx" style="top: -20px; left: 40%; color: var(--blue); transform: rotate(0deg);">CONNECT!</div>
+                <img src="grupal.jpg" alt="Grupo" onerror="this.src='https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800'">
+                <div class="caption cap-bot-right" style="max-width: 60%;">
+                    <span style="color: var(--red); font-weight:900;">LA ACTIVIDAD:</span><br>
+                    Nos unimos. No como individuos, sino como nodos. Si uno suelta la cuerda, la tensión cae. Entendimos la Eco-pedagogía: <strong>NADIE NAVEGA SOLO.</strong>
+                </div>
+            </div>
+
+            <div class="system-log">
+                > INICIANDO PROTOCOLO DE REFLEXIÓN...<br>
+                > USUARIO: DANIEL TIJERINO (DOCENTE CTP)<br>
+                > STATUS: PROCESANDO DATOS...<br>
+                ------------------------------------------------<br>
+                CONCLUSIÓN: Mis estudiantes de informática creen que la "Nube" es una computadora en Virginia. Hoy confirmé que la verdadera Nube es la que da sombra y lluvia.<br>
+                <br>
+                La tecnología debe servir a la vida, no reemplazarla. Como docente, mi misión es actualizar el software mental de mis alumnos para que sean compatibles con el ecosistema.<br>
+                ------------------------------------------------<br>
+                > FIN DEL REPORTE._<span style="animation: pulse 0.5s infinite;">█</span>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        var audio = document.getElementById("bg-music");
+        
+        function startComic() {
+            document.getElementById("launcher").style.transform = "translateY(-100%)";
+            audio.volume = 0.6;
+            audio.play().catch(e => console.log("Audio play blocked"));
+        }
+
+        function toggleAudio() {
+            if (audio.paused) audio.play();
+            else audio.pause();
+        }
+    </script>
+</body>
+</html>
